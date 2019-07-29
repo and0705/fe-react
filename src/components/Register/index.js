@@ -19,22 +19,24 @@ export default () => {
   // repass: '',
   // });
 
+  const err = validateForm(state);
+
   const handleChange = event => {
     setState({
       ...state,
       [event.target.name]: event.target.value,
     });
 
-    // setErrors(validateForm(state));
-    validateForm(state);
+    // setErrors(err);
+    // err;
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    handleChange(event);
+    // handleChange(event);
 
-    console.log(validateForm(state));
+    console.log(err);
 
     // const test = {
     //   a: '',
@@ -43,9 +45,9 @@ export default () => {
 
     // console.log(!_.isEmpty(test));
 
-    console.log(JSON.stringify(validateForm(state)));
+    console.log(JSON.stringify(err));
 
-    if (JSON.stringify(validateForm(state)) === '{}') {
+    if (JSON.stringify(err) === '{}') {
       userServices.register({
         email: state.email,
         username: state.username,
@@ -76,7 +78,7 @@ export default () => {
                         value={state.email}
                         onChange={e => handleChange(e)}
                       />
-                      {validateForm(state).email && <p className="help is-danger">{validateForm(state).email}</p>}
+                      {err.email && <p className="help is-danger">{err.email}</p>}
                     </div>
                   </label>
                 </div>
@@ -94,7 +96,7 @@ export default () => {
                         value={state.username}
                         onChange={e => handleChange(e)}
                       />
-                      {validateForm(state).username && <p className="help is-danger">{validateForm(state).username}</p>}
+                      {err.username && <p className="help is-danger">{err.username}</p>}
                     </div>
                   </label>
                 </div>
@@ -112,7 +114,7 @@ export default () => {
                         value={state.password}
                         onChange={e => handleChange(e)}
                       />
-                      {validateForm(state).password && <p className="help is-danger">{validateForm(state).password}</p>}
+                      {err.password && <p className="help is-danger">{err.password}</p>}
                     </div>
                   </label>
                 </div>
@@ -130,7 +132,7 @@ export default () => {
                         value={state.repass}
                         onChange={e => handleChange(e)}
                       />
-                      {validateForm(state).repass && <p className="help is-danger">{validateForm(state).repass}</p>}
+                      {err.repass && <p className="help is-danger">{err.repass}</p>}
                     </div>
                   </label>
                 </div>
