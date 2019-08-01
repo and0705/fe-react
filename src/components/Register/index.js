@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import validateForm from 'helpers/validateForm';
+import isUndf from 'helpers/isUndf';
 import { userServices } from '../../services';
 
 export default () => {
@@ -9,14 +10,14 @@ export default () => {
     // email: '',
     // username: '',
     // password: '',
-    // repass: '',
+    // confirm_password: '',
   });
 
   // const [errors, setErrors] = useState({
   // email: '',
   // username: '',
   // password: '',
-  // repass: '',
+  // confirm_password: '',
   // });
 
   const err = validateForm(state);
@@ -47,12 +48,12 @@ export default () => {
 
     console.log(JSON.stringify(err));
 
-    if (JSON.stringify(err) === '{}') {
+    if (isUndf(err.email) && isUndf(err.username) && isUndf(err.password) && isUndf(err.confirm_password)) {
       userServices.register({
         email: state.email,
         username: state.username,
         password: state.password,
-        re_pass: state.repass,
+        confirm_password: state.confirm_password,
       });
     }
   };
@@ -75,6 +76,7 @@ export default () => {
                         name="email"
                         placeholder="Email"
                         autoComplete="off"
+                        autoFocus
                         value={state.email}
                         onChange={e => handleChange(e)}
                       />
@@ -127,12 +129,12 @@ export default () => {
                         className="input"
                         type="password"
                         placeholder="Re-enter Password"
-                        name="repass"
+                        name="confirm_password"
                         // required
-                        value={state.repass}
+                        value={state.confirm_password}
                         onChange={e => handleChange(e)}
                       />
-                      {err.repass && <p className="help is-danger">{err.repass}</p>}
+                      {err.confirm_password && <p className="help is-danger">{err.confirm_password}</p>}
                     </div>
                   </label>
                 </div>

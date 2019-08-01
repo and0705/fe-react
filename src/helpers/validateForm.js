@@ -3,7 +3,7 @@ const validateForm = fields => {
     // email: '',
     // username: '',
     // password: '',
-    // repass: '',
+    // confirm_password: '',
   };
 
   //   console.log(fields);
@@ -27,14 +27,14 @@ const validateForm = fields => {
   }
   // else errors.password = '';
 
-  if (!fields.repass) {
-    errors.repass = 'Confirm your password';
-  } else if (fields.repass !== fields.password) {
-    errors.repass = 'Confirm password does not match';
+  if (!fields.confirm_password) {
+    errors.confirm_password = 'Confirm your password';
+  } else if (fields.confirm_password !== fields.password) {
+    errors.confirm_password = 'Confirm password does not match';
   }
 
-  // console.log(fields.email, fields.username, fields.password, fields.repass);
-  // console.log('validate return: ', errors.email, errors.username, errors.password, errors.repass);
+  // console.log(fields.email, fields.username, fields.password, fields.confirm_password);
+  // console.log('validate return: ', errors.email, errors.username, errors.password, errors.confirm_password);
 
   return errors;
 };

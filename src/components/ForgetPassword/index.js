@@ -6,19 +6,7 @@ import isUndf from 'helpers/isUndf';
 import { userServices } from '../../services';
 
 export default () => {
-  const [state, setState] = useState({
-    // email: '',
-    // username: '',
-    // password: '',
-    // repass: '',
-  });
-
-  // const [errors, setErrors] = useState({
-  // email: '',
-  // username: '',
-  // password: '',
-  // repass: '',
-  // });
+  const [state, setState] = useState({});
 
   const err = validateForm(state);
 
@@ -28,32 +16,15 @@ export default () => {
       ...state,
       [event.target.name]: event.target.value,
     });
-
-    // setErrors(err);
-    // err;
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    // handleChange(event);
-
-    // console.log(err);
-
-    // const test = {
-    //   a: '',
-    //   b: '',
-    // };
-
-    // console.log(!_.isEmpty(test));
-
-    // console.log(JSON.stringify(err));
-    // console.log('validate username:', err.username, 'validate pass: ', err.password);
-
-    if (isUndf(err.username) && isUndf(err.password)) {
-      userServices.login({
+    if (isUndf(err.username) && isUndf(err.email)) {
+      userServices.forgetPassword({
         username: state.username,
-        password: state.password,
+        email: state.email,
       });
     }
   };
@@ -61,10 +32,11 @@ export default () => {
   // Using (?? :D ??) bulma framework
   return (
     <div>
-      <h5 className="page-head-title">Login</h5>
+      <h5 className="page-head-title">Forget Password</h5>
       <div className="section is-fullheight">
         <div className="container">
           <div className="column is-4 is-offset-4">
+            <p>Enter your email and username then we will send verification to your email.</p>
             <div className="box">
               <form onSubmit={handleSubmit}>
                 <div className="field">
@@ -84,31 +56,33 @@ export default () => {
                     </div>
                   </label>
                 </div>
+
                 <div className="field">
                   <label className="label">
-                    Password
+                    Email
                     <div className="control">
                       <input
                         className="input"
-                        type="password"
-                        placeholder="Password"
-                        name="password"
-                        value={state.password}
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        value={state.email}
                         // required
                         onChange={e => handleChange(e)}
                       />
-                      {err.password && <p className="help is-danger">{err.password}</p>}
+                      {err.email && <p className="help is-danger">{err.email}</p>}
                     </div>
                   </label>
                 </div>
+
                 <button type="submit" className="button is-block is-info is-fullwidth">
-                  Login
+                  Send verification email
                 </button>
               </form>
               <div>
-                <Link to="/register">Do not have an account? Register!</Link>
+                <Link to="/login">Login</Link>
                 <br />
-                <Link to="/forget_password">Forget Password?</Link>
+                <Link to="/register">Do not have an account? Register!</Link>
               </div>
             </div>
           </div>
