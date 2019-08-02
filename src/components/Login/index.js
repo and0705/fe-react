@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import validateForm from 'helpers/validateForm';
-import isUndf from 'helpers/isUndf';
 import { userServices } from '../../services';
 
 export default () => {
@@ -34,6 +33,7 @@ export default () => {
   };
 
   const handleSubmit = event => {
+    // userServices.logout();
     event.preventDefault();
 
     // handleChange(event);
@@ -50,11 +50,13 @@ export default () => {
     // console.log(JSON.stringify(err));
     // console.log('validate username:', err.username, 'validate pass: ', err.password);
 
-    if (isUndf(err.username) && isUndf(err.password)) {
+    if (!err.username && !err.password) {
       userServices.login({
         username: state.username,
         password: state.password,
       });
+    } else {
+      console.log("You've not entered valid params");
     }
   };
 

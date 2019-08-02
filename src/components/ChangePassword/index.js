@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import validateForm from 'helpers/validateForm';
-import isUndf from 'helpers/isUndf';
 import { userServices } from '../../services';
 
 export default () => {
@@ -21,12 +20,11 @@ export default () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (isUndf(err.username) && isUndf(err.email)) {
-      userServices.forgetPassword({
-        // token: sessionStorage.getItem('token'),
-        // email: state.email,
+    if (!err.old_password && !err.password && !err.confirm_password) {
+      console.log('hello');
+      userServices.changePassword({
         old_password: state.old_password,
-        new_password: state.new_password,
+        new_password: state.password,
         confirm_password: state.confirm_password,
       });
     }
@@ -35,16 +33,15 @@ export default () => {
   // Using (?? :D ??) bulma framework
   return (
     <div>
-      <h5 className="page-head-title">Forget Password</h5>
+      <h5 className="page-head-title">Change Password</h5>
       <div className="section is-fullheight">
         <div className="container">
           <div className="column is-4 is-offset-4">
-            <p>Enter your email and username then we will send verification to your email.</p>
             <div className="box">
               <form onSubmit={handleSubmit}>
                 <div className="field">
                   <label className="label">
-                    Username
+                    Current password
                     <div className="control">
                       <input
                         className="input"
@@ -55,22 +52,21 @@ export default () => {
                         value={state.old_password}
                         onChange={e => handleChange(e)}
                       />
-                      {err.password && <p className="help is-danger">{err.password}</p>}
+                      {err.old_password && <p className="help is-danger">{err.old_password}</p>}
                     </div>
                   </label>
                 </div>
 
                 <div className="field">
                   <label className="label">
-                    Username
+                    Enter new password
                     <div className="control">
                       <input
                         className="input"
                         type="password"
-                        name="new_password"
+                        name="password"
                         placeholder="New password"
-                        autoFocus //???
-                        value={state.new_password}
+                        value={state.password}
                         onChange={e => handleChange(e)}
                       />
                       {err.password && <p className="help is-danger">{err.password}</p>}
@@ -97,14 +93,14 @@ export default () => {
                 </div>
 
                 <button type="submit" className="button is-block is-info is-fullwidth">
-                  Send verification email
+                  Change password
                 </button>
               </form>
-              <div>
+              {/* <div>
                 <Link to="/login">Login</Link>
                 <br />
                 <Link to="/register">Do not have an account? Register!</Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

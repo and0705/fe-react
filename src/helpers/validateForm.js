@@ -20,12 +20,19 @@ const validateForm = fields => {
     errors.username = 'Username must be 5 or more characters';
   }
 
+  if (!fields.old_password) {
+    errors.old_password = 'Password is required';
+  } else if (fields.old_password.length < 6) {
+    errors.old_password = 'Password must be 6 or more characters';
+  }
+
   if (!fields.password) {
     errors.password = 'Password is required';
   } else if (fields.password.length < 6) {
     errors.password = 'Password must be 6 or more characters';
+  } else if (fields.password === fields.old_password) {
+    errors.password = 'New password must be different from current password';
   }
-  // else errors.password = '';
 
   if (!fields.confirm_password) {
     errors.confirm_password = 'Confirm your password';

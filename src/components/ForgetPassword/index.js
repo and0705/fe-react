@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import validateForm from 'helpers/validateForm';
-import isUndf from 'helpers/isUndf';
 import { userServices } from '../../services';
 
 export default () => {
@@ -21,7 +20,7 @@ export default () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (isUndf(err.username) && isUndf(err.email)) {
+    if (!err.username && !err.email) {
       userServices.forgetPassword({
         username: state.username,
         email: state.email,

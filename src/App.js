@@ -14,14 +14,16 @@ const Register = React.lazy(() => import('components/Register'));
 const Home = React.lazy(() => import('components/Home'));
 const ForgetPassword = React.lazy(() => import('components/ForgetPassword'));
 const ChangePassword = React.lazy(() => import('components/ChangePassword'));
+const Logged = React.lazy(() => import('components/Logged'));
+const Logout = React.lazy(() => import('components/Home'));
 
 const Test = React.lazy(() => import('components/Test'));
 
-const AuthRequired = () => {
-  if (true) {
-    this.props.history.push('/aaa');
-  }
-};
+// const AuthRequired = () => {
+//   if (true) {
+//     this.props.history.push('/aaa');
+//   }
+// };
 
 const App = () => {
   return (
@@ -35,6 +37,8 @@ const App = () => {
           <Route exact path="/register" name="Register" component={Register} />
           <Route exact path="/forget_password" name="Forget Password" component={ForgetPassword} />
           <Route exact path="/change_password" name="Change Password" component={ChangePassword} />
+          <Route exact path="/logged" name="Logged" component={Logged} />
+          <Route exact path="/logout" name="Logout" component={Logout} />
           {/* <Route exact path="/home" name="Home" component={Home} /> */}
           {/* <Route exact path="/login" name="Register" component={Register} /> */}
           {/* <Route exact path="/404" name="Page 404" component={Page404} />

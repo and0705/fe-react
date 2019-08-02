@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import validateForm from 'helpers/validateForm';
-import isUndf from 'helpers/isUndf';
 import { userServices } from '../../services';
 
 export default () => {
@@ -48,7 +47,7 @@ export default () => {
 
     console.log(JSON.stringify(err));
 
-    if (isUndf(err.email) && isUndf(err.username) && isUndf(err.password) && isUndf(err.confirm_password)) {
+    if (!err.email && !err.username && !err.password && !err.confirm_password) {
       userServices.register({
         email: state.email,
         username: state.username,
