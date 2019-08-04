@@ -5,19 +5,7 @@ import validateForm from 'helpers/validateForm';
 import { userServices } from '../../services';
 
 export default () => {
-  const [state, setState] = useState({
-    // email: '',
-    // username: '',
-    // password: '',
-    // confirm_password: '',
-  });
-
-  // const [errors, setErrors] = useState({
-  // email: '',
-  // username: '',
-  // password: '',
-  // confirm_password: '',
-  // });
+  const [state, setState] = useState({});
 
   const err = validateForm(state);
 
@@ -26,25 +14,11 @@ export default () => {
       ...state,
       [event.target.name]: event.target.value,
     });
-
-    // setErrors(err);
-    // err;
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-
-    // handleChange(event);
-
     console.log(err);
-
-    // const test = {
-    //   a: '',
-    //   b: '',
-    // };
-
-    // console.log(!_.isEmpty(test));
-
     console.log(JSON.stringify(err));
 
     if (!err.email && !err.username && !err.password && !err.confirm_password) {
@@ -144,7 +118,7 @@ export default () => {
               </form>
 
               <div>
-                <Link to="/login">Have an account? Login!</Link>
+                <Link to="/login">Login!</Link>
               </div>
             </div>
           </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Home from 'components/Home';
 
@@ -15,3 +14,5 @@ export default () => {
   }
   return <Home />;
 };
+
+// 追光者

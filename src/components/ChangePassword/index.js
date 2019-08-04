@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+// import Cookies from 'js-cookie';
 
+// import { Redirect } from 'react-router';
 import validateForm from 'helpers/validateForm';
 import { userServices } from '../../services';
 

@@ -6,7 +6,6 @@ import history from '../history';
 const fetchUsers = () => requestServices.customAxios.get('/').then(res => res.data);
 
 const login = data => {
-  // sessionStorage.clear();
   requestServices.customAxios.post('users/login', data).then(res => {
     Cookies.set('token', res.data.token, { expires: 1 / 48, path: '' });
     history.push('/logged');
@@ -23,7 +22,7 @@ const register = data => {
 const forgetPassword = data => {
   requestServices.customAxios.post('users/forget_password', data).then(res => {
     console.log(res.data.verification_link);
-    // this.props.history.push('/login');
+    history.push('/login');
   });
 };
 
@@ -46,13 +45,10 @@ const changePassword = data => {
 const logout = data => {
   Cookies.remove('token');
 
-  requestServices.customAxios
-    .get('users/logout', data)
-    .then(res => {
-      console.log(res);
-      // sessionStorage.clear();
-    })
-    .then(() => history.push('/'));
+  requestServices.customAxios.get('users/logout', data).then(res => {
+    console.log(res);
+    history.push('/home');
+  });
 };
 
 export default {
