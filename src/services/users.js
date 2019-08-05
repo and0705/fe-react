@@ -1,16 +1,11 @@
 // @flow
 import { requestServices } from 'services';
 import Cookies from 'js-cookie';
-import history from '../history';
 
 const fetchUsers = () => requestServices.customAxios.get('/').then(res => res.data);
 
 const login = data => {
-  requestServices.customAxios.post('users/login', data).then(res => {
-    Cookies.set('token', res.data.token, { expires: 1 / 48, path: '' });
-    history.push('/logged');
-    console.log('token got: ', Cookies.get('token'));
-  });
+  return requestServices.customAxios.post('users/login', data);
 };
 
 const register = data => {
@@ -22,24 +17,17 @@ const register = data => {
 const forgetPassword = data => {
   requestServices.customAxios.post('users/forget_password', data).then(res => {
     console.log(res.data.verification_link);
-    history.push('/login');
+    // history.push('/login');
   });
 };
 
 const changePassword = data => {
-  // console.log(sessionStorage.token);
-  console.log('Cookies token: ', Cookies.get('token'));
   console.log(data);
-  requestServices.customAxios
-    .post('users/change_password', data, {
-      headers: {
-        Authorization: 'Bearer ' + Cookies.get('token'),
-      },
-    })
-    .then(res => {
-      console.log(res.data.password_changed);
-      console.log(res);
-    });
+  return requestServices.customAxios.post('users/change_password', data, {
+    headers: {
+      Authorization: 'Bearer ' + Cookies.get('token'),
+    },
+  });
 };
 
 const logout = data => {
@@ -47,7 +35,7 @@ const logout = data => {
 
   requestServices.customAxios.get('users/logout', data).then(res => {
     console.log(res);
-    history.push('/home');
+    // history.push('/home');
   });
 };
 

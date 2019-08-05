@@ -5,6 +5,5 @@ export default () => {
   if (Cookies.get('token')) {
     return true;
   }
-  console.log('vl');
   return false;
 };
