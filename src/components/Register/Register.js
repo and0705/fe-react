@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import validateForm from 'helpers/validateForm';
 import { userServices } from 'services';
+import checkAuth from 'helpers/checkAuth';
 
 const Register = () => {
   const [state, setState] = useState({});
+  const [err, setErr] = useState({});
 
-  const err = validateForm(state);
+  if (checkAuth()) return <Redirect to="/logged" />;
 
   const handleChange = event => {
-    setState({
+    // set values for post to server through API
+    const newState = {
       ...state,
       [event.target.name]: event.target.value,
-    });
+    };
+    setState(newState);
+    setErr(validateForm(newState));
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log(err);
-    console.log(JSON.stringify(err));
 
     if (!err.email && !err.username && !err.password && !err.confirm_password) {
       userServices.register({
@@ -45,7 +48,7 @@ const Register = () => {
                     <div className="control">
                       <input
                         className="input"
-                        // type="email"
+                        type="email"
                         name="email"
                         placeholder="Email"
                         autoComplete="off"

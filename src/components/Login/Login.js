@@ -25,18 +25,19 @@ const Login = props => {
     event.preventDefault();
 
     if (!err.username && !err.password) {
-      userServices
-        .login({
-          username: state.username,
-          password: state.password,
-        })
-        .then(res => {
-          Cookies.set('token', res.data.token, { expires: 1 / 48, path: '' });
-          props.history.push('/logged');
-        });
-      // .catch(() => {
-      //   console.log('LoginFail');
-      // });
+      try {
+        userServices
+          .login({
+            username: state.username,
+            password: state.password,
+          })
+          .then(res => {
+            Cookies.set('token', res.data.token, { expires: 1 / 48, path: '' });
+            props.history.push('/logged');
+          });
+      } catch {
+        console.log('Login Fail');
+      }
     }
   };
 

@@ -25,20 +25,21 @@ const ChangePassword = props => {
     event.preventDefault();
 
     if (!err.old_password && !err.password && !err.confirm_password) {
-      userServices
-        .changePassword({
-          old_password: state.old_password,
-          new_password: state.password,
-          confirm_password: state.confirm_password,
-        })
-        .then(res => {
-          console.log(res.data.password_changed);
-          props.history.push('/logged');
-          console.log('push');
-        });
-      // .catch(() => {
-      //   console.log('Fail');
-      // });
+      try {
+        userServices
+          .changePassword({
+            old_password: state.old_password,
+            new_password: state.password,
+            confirm_password: state.confirm_password,
+          })
+          .then(res => {
+            console.log(res.data.password_changed);
+            props.history.push('/logged');
+            console.log('push');
+          });
+      } catch {
+        console.log('Fail');
+      }
     }
   };
 

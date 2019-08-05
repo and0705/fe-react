@@ -1,30 +1,36 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
+import { Link, Redirect } from 'react-router-dom';
 import validateForm from 'helpers/validateForm';
+// import Cookies from 'js-cookie';
+import checkAuth from 'helpers/checkAuth';
 import { userServices } from 'services';
 
-const ForgetPassword = () => {
+const ForgetPassword = props => {
   const [state, setState] = useState({});
+  const [err, setErr] = useState({});
 
-  const err = validateForm(state);
+  if (checkAuth()) return <Redirect to="/logged" />;
 
   const handleChange = event => {
     // set values for post to server through API
-    setState({
+    const newState = {
       ...state,
       [event.target.name]: event.target.value,
-    });
+    };
+    setState(newState);
+    setErr(validateForm(newState));
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
     if (!err.username && !err.email) {
-      userServices.forgetPassword({
-        username: state.username,
-        email: state.email,
-      });
+      userServices
+        .forgetPassword({
+          username: state.username,
+          email: state.email,
+        })
+        .then(() => props.history.push('/'));
     }
   };
 
@@ -35,7 +41,7 @@ const ForgetPassword = () => {
       <div className="section is-fullheight">
         <div className="container">
           <div className="column is-4 is-offset-4">
-            <p>Enter your email and username then we will send verification to your email.</p>
+            <p>Enter your info, we'll send verification to your email.</p>
             <div className="box">
               <form onSubmit={handleSubmit}>
                 <div className="field">
@@ -81,7 +87,7 @@ const ForgetPassword = () => {
               <div>
                 <Link to="/login">Login</Link>
                 <br />
-                <Link to="/register">Do not have an account? Register!</Link>
+                <Link to="/register">Register!</Link>
               </div>
             </div>
           </div>
