@@ -9,23 +9,17 @@ const login = data => {
 };
 
 const register = data => {
-  requestServices.customAxios.post('users/register', data).then(res => {
-    console.log(res.data.Successful);
-  });
+  return requestServices.customAxios.post('users/register', data);
 };
 
 const forgetPassword = data => {
-  requestServices.customAxios.post('users/forget_password', data).then(res => {
-    console.log(res.data.verification_link);
-    // history.push('/login');
-  });
+  return requestServices.customAxios.post('users/forget_password', data);
 };
 
 const changePassword = data => {
-  console.log(data);
   return requestServices.customAxios.post('users/change_password', data, {
     headers: {
-      Authorization: 'Bearer ' + Cookies.get('token'),
+      Authorization: `Bearer ${  Cookies.get('token')}`,
     },
   });
 };

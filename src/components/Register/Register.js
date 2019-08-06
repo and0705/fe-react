@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-
+import toaster from 'toasted-notes';
+import 'toasted-notes/src/styles.css';
 import validateForm from 'helpers/validateForm';
 import { userServices } from 'services';
 import checkAuth from 'helpers/checkAuth';
 
-const Register = () => {
-  const [state, setState] = useState({});
+const Register = props => {
+  const [state, setState] = useState({
+    email: '',
+    username: '',
+    password: '',
+    confirm_password: '',
+  });
   const [err, setErr] = useState({});
+  const [rep, setRep] = useState({
+    incorrect: '',
+  });
 
   if (checkAuth()) return <Redirect to="/logged" />;
 
   const handleChange = event => {
-    // set values for post to server through API
+    setRep({ incorrect: '' });
+
     const newState = {
       ...state,
       [event.target.name]: event.target.value,
@@ -25,12 +35,25 @@ const Register = () => {
     event.preventDefault();
 
     if (!err.email && !err.username && !err.password && !err.confirm_password) {
-      userServices.register({
-        email: state.email,
-        username: state.username,
-        password: state.password,
-        confirm_password: state.confirm_password,
-      });
+      userServices
+        .register({
+          email: state.email,
+          username: state.username,
+          password: state.password,
+          confirm_password: state.confirm_password,
+        })
+        .then(res => {
+          console.log(state);
+          console.log(res.data.verification_link);
+          toaster.notify('Check your email for verification', {
+            duration: 5000,
+          });
+
+          props.history.push('/');
+        })
+        .catch(res => {
+          setRep({ incorrect: 'Something not true -- update fe code' });
+        });
     }
   };
 
@@ -39,6 +62,8 @@ const Register = () => {
       <h5 className="page-head-title">Register</h5>
       <div className="section is-fullheight">
         <div className="container">
+          <p className="is-danger">{rep.incorrect}</p>
+
           <div className="column is-4 is-offset-4">
             <div className="box">
               <form onSubmit={handleSubmit}>
@@ -48,7 +73,6 @@ const Register = () => {
                     <div className="control">
                       <input
                         className="input"
-                        type="email"
                         name="email"
                         placeholder="Email"
                         autoComplete="off"

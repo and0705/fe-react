@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import validateForm from 'helpers/validateForm';
-// import Cookies from 'js-cookie';
 import checkAuth from 'helpers/checkAuth';
 import { userServices } from 'services';
+import toaster from 'toasted-notes';
+import 'toasted-notes/src/styles.css';
 
 const ForgetPassword = props => {
   const [state, setState] = useState({});
   const [err, setErr] = useState({});
 
+  const [rep, setRep] = useState({
+    incorrect: '',
+  });
+
   if (checkAuth()) return <Redirect to="/logged" />;
 
   const handleChange = event => {
     // set values for post to server through API
+    setRep({ incorrect: '' });
     const newState = {
       ...state,
       [event.target.name]: event.target.value,
@@ -30,7 +36,17 @@ const ForgetPassword = props => {
           username: state.username,
           email: state.email,
         })
-        .then(() => props.history.push('/'));
+        .then(res => {
+          console.log(res.data.verification_link);
+
+          toaster.notify('Check your email for verification', {
+            duration: 5000,
+          });
+          props.history.push('/');
+        })
+        .catch(res => {
+          setRep({ incorrect: 'Get notification from backend' });
+        });
     }
   };
 
@@ -41,7 +57,8 @@ const ForgetPassword = props => {
       <div className="section is-fullheight">
         <div className="container">
           <div className="column is-4 is-offset-4">
-            <p>Enter your info, we'll send verification to your email.</p>
+            <p>{rep.incorrect}</p>
+
             <div className="box">
               <form onSubmit={handleSubmit}>
                 <div className="field">
@@ -53,7 +70,7 @@ const ForgetPassword = props => {
                         type=""
                         name="username"
                         placeholder="Username"
-                        autoFocus //???
+                        autoFocus // ???
                         value={state.username}
                         onChange={e => handleChange(e)}
                       />
@@ -68,7 +85,7 @@ const ForgetPassword = props => {
                     <div className="control">
                       <input
                         className="input"
-                        type="email"
+                        // type="email"
                         placeholder="Email"
                         name="email"
                         value={state.email}

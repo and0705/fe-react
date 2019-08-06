@@ -4,15 +4,20 @@ import validateForm from 'helpers/validateForm';
 // import Cookies from 'js-cookie';
 import checkAuth from 'helpers/checkAuth';
 import { userServices } from 'services';
-
+import toaster from 'toasted-notes';
+import 'toasted-notes/src/styles.css';
+ 
 const ChangePassword = props => {
   const [state, setState] = useState({});
   const [err, setErr] = useState({});
+  const [rep, setRep] = useState({
+    incorrect: '',
+  });
 
   if (!checkAuth()) return <Redirect to="/" />;
 
   const handleChange = event => {
-    // set values for post to server through API
+    setRep({ incorrect: '' });
     const newState = {
       ...state,
       [event.target.name]: event.target.value,
@@ -25,21 +30,22 @@ const ChangePassword = props => {
     event.preventDefault();
 
     if (!err.old_password && !err.password && !err.confirm_password) {
-      try {
-        userServices
-          .changePassword({
-            old_password: state.old_password,
-            new_password: state.password,
-            confirm_password: state.confirm_password,
-          })
-          .then(res => {
-            console.log(res.data.password_changed);
-            props.history.push('/logged');
-            console.log('push');
+      userServices
+        .changePassword({
+          old_password: state.old_password,
+          new_password: state.password,
+          confirm_password: state.confirm_password,
+        })
+        .then(res => {
+          console.log(res.data.password_changed);
+          toaster.notify('Password changed!', {
+            duration: 5000,
           });
-      } catch {
-        console.log('Fail');
-      }
+          props.history.push('/logged');
+        })
+        .catch(res => {
+          setRep({ incorrect: 'get from response be' });
+        });
     }
   };
 
@@ -50,6 +56,7 @@ const ChangePassword = props => {
       <div className="section is-fullheight">
         <div className="container">
           <div className="column is-4 is-offset-4">
+            <p>{rep.incorrect}</p>
             <div className="box">
               <form onSubmit={handleSubmit}>
                 <div className="field">

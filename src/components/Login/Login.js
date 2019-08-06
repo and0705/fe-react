@@ -6,13 +6,21 @@ import checkAuth from 'helpers/checkAuth';
 import { userServices } from 'services';
 
 const Login = props => {
-  const [state, setState] = useState({ username: '', password: '' });
+  const [state, setState] = useState({
+    username: '',
+    password: '',
+  });
   const [err, setErr] = useState({});
+
+  const [rep, setRep] = useState({
+    incorrect: '',
+  });
 
   if (checkAuth()) return <Redirect to="/logged" />;
 
   const handleChange = event => {
     // set values for post to server through API
+    setRep({ incorrect: '' });
     const newState = {
       ...state,
       [event.target.name]: event.target.value,
@@ -25,19 +33,22 @@ const Login = props => {
     event.preventDefault();
 
     if (!err.username && !err.password) {
-      try {
-        userServices
-          .login({
-            username: state.username,
-            password: state.password,
-          })
-          .then(res => {
-            Cookies.set('token', res.data.token, { expires: 1 / 48, path: '' });
-            props.history.push('/logged');
-          });
-      } catch {
-        console.log('Login Fail');
-      }
+      // console.log(!err.username && !err.password);
+      userServices
+        .login({
+          username: state.username,
+          password: state.password,
+        })
+        .then(res => {
+          Cookies.set('token', res.data.token, { expires: 1 / 48, path: '' });
+          props.history.push('/logged');
+          console.log('.then part');
+        })
+        .catch(res => {
+          // setRep({ incorrect: res.message.replace(/400 Bad Request: /gi, '') });
+          setRep({ incorrect: res.response.data.message.split(':')[1] });
+          console.log(res.response.data.message, 'show res ra');
+        });
     }
   };
 
@@ -47,6 +58,8 @@ const Login = props => {
       <h5 className="page-head-title">Login</h5>
       <div className="section is-fullheight">
         <div className="container">
+          <p className="is-danger">{rep.incorrect}</p>
+
           <div className="column is-4 is-offset-4">
             <div className="box">
               <form onSubmit={handleSubmit}>
@@ -59,7 +72,7 @@ const Login = props => {
                         type="text"
                         name="username"
                         placeholder="Username"
-                        autoFocus //???
+                        autoFocus // ???
                         value={state.username}
                         onChange={e => handleChange(e)}
                       />
@@ -85,6 +98,7 @@ const Login = props => {
                     </div>
                   </label>
                 </div>
+
                 <button type="submit" className="button is-block is-info is-fullwidth">
                   Login
                 </button>

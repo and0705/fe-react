@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react';
-import { Route, Router, Switch, Redirect } from 'react-router-dom';
+import { Route, Router, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import './App.scss';
 // import AuthRequired from 'components/AuthRequired';
 
-import checkAuth from 'helpers/checkAuth';
+// import checkAuth from 'helpers/checkAuth';
 
 const browserHistory = createBrowserHistory();
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
@@ -30,22 +30,12 @@ const App = () => {
     <Router history={browserHistory}>
       <Suspense fallback={loading()}>
         <Switch>
-          <Route exact path="/" name="Home" render={() => (!checkAuth() ? <Home /> : <Logged />)} />
+          <Route exact path="/" name="Home" component={Home} />
 
           <Route path="/login" name="Login Page" component={Login} />
-          <Route path="/register" name="Register" component={!checkAuth() ? Register : Logged} />
-          <Route
-            exact
-            path="/forget_password"
-            name="Forget Password"
-            render={() => (!checkAuth() ? <ForgetPassword /> : <Logged />)}
-          />
-          <Route
-            exact
-            path="/change_password"
-            name="Change Password"
-            render={() => (checkAuth() ? <ChangePassword /> : <Redirect to="/" />)}
-          />
+          <Route path="/register" name="Register" component={Register} />
+          <Route exact path="/forget_password" name="Forget Password" component={ForgetPassword} />
+          <Route exact path="/change_password" name="Change Password" component={ChangePassword} />
           <Route path="/logged" name="Logged" component={Logged} />
           {/* <Route exact path="/404" name="Page 404" component={Page404} />
         <Route exact path="/403" name="Page 403" component={Page403} />

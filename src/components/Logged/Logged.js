@@ -22,8 +22,8 @@ const Logged = props => {
       </h5>
 
       <Link to="/change_password">Change password</Link>
-      <br />
-      <button type="button" onClick={handleLogout}>
+
+      <button className="button is-block is-info" type="button" onClick={handleLogout}>
         Log out
       </button>
     </div>
