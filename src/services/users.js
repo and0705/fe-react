@@ -19,7 +19,7 @@ const forgetPassword = data => {
 const changePassword = data => {
   return requestServices.customAxios.post('users/change_password', data, {
     headers: {
-      Authorization: `Bearer ${  Cookies.get('token')}`,
+      Authorization: `Bearer ${Cookies.get('token')}`,
     },
   });
 };
@@ -27,10 +27,7 @@ const changePassword = data => {
 const logout = data => {
   Cookies.remove('token');
 
-  requestServices.customAxios.get('users/logout', data).then(res => {
-    console.log(res);
-    // history.push('/home');
-  });
+  requestServices.customAxios.get('users/logout', data);
 };
 
 export default {

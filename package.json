@@ -19,6 +19,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-validation": "^3.0.7",
+    "toasted-notes": "^2.1.6",
     "validator": "^11.1.0"
   },
   "scripts": {

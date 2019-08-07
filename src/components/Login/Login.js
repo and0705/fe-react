@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import validateForm from 'helpers/validateForm';
+import toaster from 'toasted-notes';
+import 'toasted-notes/src/styles.css';
 import Cookies from 'js-cookie';
 import checkAuth from 'helpers/checkAuth';
 import { userServices } from 'services';
@@ -33,7 +35,6 @@ const Login = props => {
     event.preventDefault();
 
     if (!err.username && !err.password) {
-      // console.log(!err.username && !err.password);
       userServices
         .login({
           username: state.username,
@@ -41,13 +42,14 @@ const Login = props => {
         })
         .then(res => {
           Cookies.set('token', res.data.token, { expires: 1 / 48, path: '' });
+          // eslint-disable-next-line
           props.history.push('/logged');
-          console.log('.then part');
+          toaster.notify('res.data.successful', {
+            duration: 5000,
+          });
         })
         .catch(res => {
-          // setRep({ incorrect: res.message.replace(/400 Bad Request: /gi, '') });
           setRep({ incorrect: res.response.data.message.split(':')[1] });
-          console.log(res.response.data.message, 'show res ra');
         });
     }
   };
@@ -64,6 +66,7 @@ const Login = props => {
             <div className="box">
               <form onSubmit={handleSubmit}>
                 <div className="field">
+                  {/* eslint-disable-next-line */}
                   <label className="label">
                     Username
                     <div className="control">
@@ -72,6 +75,7 @@ const Login = props => {
                         type="text"
                         name="username"
                         placeholder="Username"
+                        // eslint-disable-next-line
                         autoFocus // ???
                         value={state.username}
                         onChange={e => handleChange(e)}
@@ -82,6 +86,7 @@ const Login = props => {
                   </label>
                 </div>
                 <div className="field">
+                  {/* eslint-disable-next-line */}
                   <label className="label">
                     Password
                     <div className="control">

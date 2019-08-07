@@ -37,15 +37,14 @@ const ForgetPassword = props => {
           email: state.email,
         })
         .then(res => {
-          console.log(res.data.verification_link);
-
-          toaster.notify('Check your email for verification', {
+          toaster.notify(res.data.successful, {
             duration: 5000,
           });
+          // eslint-disable-next-line
           props.history.push('/');
         })
         .catch(res => {
-          setRep({ incorrect: 'Get notification from backend' });
+          setRep({ incorrect: res.response.data.message.split(':')[1] });
         });
     }
   };
@@ -62,6 +61,7 @@ const ForgetPassword = props => {
             <div className="box">
               <form onSubmit={handleSubmit}>
                 <div className="field">
+                  {/* eslint-disable-next-line */}
                   <label className="label">
                     Username
                     <div className="control">
@@ -70,6 +70,7 @@ const ForgetPassword = props => {
                         type=""
                         name="username"
                         placeholder="Username"
+                        //  eslint-disable-next-line
                         autoFocus // ???
                         value={state.username}
                         onChange={e => handleChange(e)}
@@ -80,6 +81,7 @@ const ForgetPassword = props => {
                 </div>
 
                 <div className="field">
+                  {/* eslint-disable-next-line */}
                   <label className="label">
                     Email
                     <div className="control">

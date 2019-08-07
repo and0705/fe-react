@@ -4,12 +4,11 @@ import Cookies from 'js-cookie';
 import checkAuth from 'helpers/checkAuth';
 
 const Logged = props => {
-  console.log(props);
-
   if (!checkAuth()) return <Redirect to="/" />;
 
   const handleLogout = () => {
     Cookies.remove('token');
+    // eslint-disable-next-line
     props.history.push('/');
   };
 
@@ -18,7 +17,7 @@ const Logged = props => {
       <h5 className="page-head-title">
         Welcome!
         <br />
-        You've logged in!
+        You&apos;ve logged in!
       </h5>
 
       <Link to="/change_password">Change password</Link>

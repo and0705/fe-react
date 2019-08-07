@@ -6,7 +6,7 @@ import checkAuth from 'helpers/checkAuth';
 import { userServices } from 'services';
 import toaster from 'toasted-notes';
 import 'toasted-notes/src/styles.css';
- 
+
 const ChangePassword = props => {
   const [state, setState] = useState({});
   const [err, setErr] = useState({});
@@ -37,14 +37,14 @@ const ChangePassword = props => {
           confirm_password: state.confirm_password,
         })
         .then(res => {
-          console.log(res.data.password_changed);
-          toaster.notify('Password changed!', {
+          toaster.notify(res.data.successful, {
             duration: 5000,
           });
+          // eslint-disable-next-line
           props.history.push('/logged');
         })
         .catch(res => {
-          setRep({ incorrect: 'get from response be' });
+          setRep({ incorrect: res.response.data.message.split(':')[1] });
         });
     }
   };
@@ -60,6 +60,7 @@ const ChangePassword = props => {
             <div className="box">
               <form onSubmit={handleSubmit}>
                 <div className="field">
+                  {/* eslint-disable-next-line */}
                   <label className="label">
                     Current password
                     <div className="control">
@@ -68,6 +69,7 @@ const ChangePassword = props => {
                         type="password"
                         name="old_password"
                         placeholder="Current password"
+                        // eslint-disable-next-line
                         autoFocus
                         value={state.old_password}
                         onChange={e => handleChange(e)}
@@ -78,6 +80,7 @@ const ChangePassword = props => {
                 </div>
 
                 <div className="field">
+                  {/* eslint-disable-next-line */}
                   <label className="label">
                     Enter new password
                     <div className="control">
@@ -95,6 +98,7 @@ const ChangePassword = props => {
                 </div>
 
                 <div className="field">
+                  {/* eslint-disable-next-line */}
                   <label className="label">
                     Re-enter password
                     <div className="control">
