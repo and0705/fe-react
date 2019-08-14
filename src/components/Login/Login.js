@@ -44,7 +44,7 @@ const Login = props => {
           Cookies.set('token', res.data.token, { expires: 1 / 48, path: '' });
           // eslint-disable-next-line
           props.history.push('/logged');
-          toaster.notify('res.data.successful', {
+          toaster.notify(res.data.successful, {
             duration: 5000,
           });
         })
